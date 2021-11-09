@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.ozzy.loginapihibernate.services.UserRegistrationValidator.*;
@@ -62,6 +64,20 @@ public class UserService {
         
         
         return userSaved.map(value -> new UserAuthenticatedDto(value.getId(), value.getUsername())).orElse(null);
+    }
+    
+    public List<UserAuthenticatedDto> getAllUsers(){
+        List<User> allUsers = new ArrayList<>();
+        List<UserAuthenticatedDto> allUsersDtos = new ArrayList<>();
+        allUsers = userRepository.findAll();
+        if(allUsers.isEmpty()){
+            throw new DataNotFoundException("NO_USERS_INFO_FOUND");
+        }
+        for(User user: allUsers){
+            allUsersDtos.add(new UserAuthenticatedDto(user.getId(),user.getUsername()));
+        }
+        
+        return allUsersDtos;
     }
     
     private Optional<User> completeSaveOrUpdate(UserDto userDto){
