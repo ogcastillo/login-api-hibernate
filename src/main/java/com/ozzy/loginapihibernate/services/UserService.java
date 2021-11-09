@@ -24,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     
     @Transactional
-    public UserAuthenticatedDto saveOrUpdateUser(UserDto userDto ){
+    public UserAuthenticatedDto saveUser(UserDto userDto ){
           Optional<User> userSaved = completeSaveOrUpdate(userDto);
           if (!userSaved.isPresent()){
             throw new DataNotCreatedException("DATA_COULD_NOT_BE_SAVED");
@@ -53,7 +53,7 @@ public class UserService {
     }
     
     @Transactional
-    public UserAuthenticatedDto updateUser(Long id,UserDto userDto){
+    public UserAuthenticatedDto updateUser(UserDto userDto){
         Optional<User> userSaved = completeSaveOrUpdate(userDto);
         
         if (!userSaved.isPresent()){
